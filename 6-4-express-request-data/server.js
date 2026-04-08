@@ -104,7 +104,7 @@ LAB SETUP INSTRUCTIONS
  *
  */
 
- // solving 
+// solving
 //import express
 import express from "express";
 
@@ -117,10 +117,9 @@ app.get("/", (req, res) => {
 
 // Query params: /echo?name=Ali&age=22
 app.get("/echo", (req, res) => {
-  const name = req.query.name;
-  const age = req.query.age;
+  const { name, age } = req.query;
 
-  if (name === undefined || age === undefined) {
+  if (!name || !age) {
     return res.status(400).json({
       ok: false,
       error: "name & age required",
@@ -129,8 +128,8 @@ app.get("/echo", (req, res) => {
 
   return res.json({
     ok: true,
-    name: name,
-    age: age,
+    name,
+    age,
     msg: `Hello ${name}, you are ${age}`,
   });
 });
