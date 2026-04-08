@@ -182,3 +182,27 @@ app.get("/profile/:first/:last", (req, res) => {
   });
 });
 
+
+/*
+============================================
+TODO-4 (Param middleware):
+============================================
+*/
+
+// Route param middleware example: /users/42
+app.param("userId", (req, res, next, userId) => {
+  const userIdNum = Number(userId);
+
+  // validation
+  if (!Number.isFinite(userIdNum) || userIdNum <= 0) {
+    return res
+      .status(400)
+      .json({ ok: false, error: "userId must be positive number" });
+  }
+
+  // store parsed value
+  req.userIdNum = userIdNum;
+
+  next();
+});
+
