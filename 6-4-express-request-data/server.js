@@ -105,13 +105,11 @@ LAB SETUP INSTRUCTIONS
  */
 
 //import express
-
+import express from "express";
 
 // create express app instance to create web server
+const app = express();
 
-
-
-// Query params: /echo?name=Ali&age=22
 
 
 // Route params: /profile/First/Last
