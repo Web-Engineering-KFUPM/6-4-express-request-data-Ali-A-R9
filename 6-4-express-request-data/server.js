@@ -104,73 +104,36 @@ LAB SETUP INSTRUCTIONS
  *
  */
 
-//import express
-// create express app instance to create web server
-// Route params: /profile/First/Last
-// Route param middleware example: /users/42
-// Route params: /users/:userId route
-// Start the server by listening
-
-
-/**
-===================================================================
-Back-end Lab — Express request data
-===================================================================
-*/
-
+ // solving 
 //import express
 import express from "express";
 
 // create express app instance to create web server
 const app = express();
 
-// Root route (for testing server is running)
 app.get("/", (req, res) => {
   res.send("server up");
 });
 
-/*
-============================================
-TODO-1 (Server Setup):
-============================================
-*/
-
-// Start the server by listening
-app.listen(3000, () => {
-  console.log("API running at http://localhost:3000");
-});
-
-/*
-============================================
-TODO-2 (/echo route):
-============================================
-*/
-
 // Query params: /echo?name=Ali&age=22
 app.get("/echo", (req, res) => {
-  const { name, age } = req.query;
+  const name = req.query.name;
+  const age = req.query.age;
 
-  // validation
-  if (!name || !age) {
-    return res
-      .status(400)
-      .json({ ok: false, error: "name & age required" });
+  if (name === undefined || age === undefined) {
+    return res.status(400).json({
+      ok: false,
+      error: "name & age required",
+    });
   }
 
-  // success response
   return res.json({
     ok: true,
-    name,
-    age,
+    name: name,
+    age: age,
     msg: `Hello ${name}, you are ${age}`,
   });
 });
-
-/*
-============================================
-TODO-3 (/profile/:first/:last route):
-============================================
-*/
 
 // Route params: /profile/First/Last
 app.get("/profile/:first/:last", (req, res) => {
@@ -182,35 +145,20 @@ app.get("/profile/:first/:last", (req, res) => {
   });
 });
 
-
-/*
-============================================
-TODO-4 (Param middleware):
-============================================
-*/
-
 // Route param middleware example: /users/42
 app.param("userId", (req, res, next, userId) => {
   const userIdNum = Number(userId);
 
-  // validation
-  if (!Number.isFinite(userIdNum) || userIdNum <= 0) {
-    return res
-      .status(400)
-      .json({ ok: false, error: "userId must be positive number" });
+  if (!Number.isInteger(userIdNum) || userIdNum <= 0) {
+    return res.status(400).json({
+      ok: false,
+      error: "userId must be positive number",
+    });
   }
 
-  // store parsed value
   req.userIdNum = userIdNum;
-
   next();
 });
-
-/*
-============================================
-TODO-5 (/users/:userId route):
-============================================
-*/
 
 // Route params: /users/:userId route
 app.get("/users/:userId", (req, res) => {
@@ -218,4 +166,9 @@ app.get("/users/:userId", (req, res) => {
     ok: true,
     userId: req.userIdNum,
   });
+});
+
+// Start the server by listening
+app.listen(3000, () => {
+  console.log("API running at http://localhost:3000");
 });
