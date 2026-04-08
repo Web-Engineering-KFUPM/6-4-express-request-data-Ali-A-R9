@@ -206,3 +206,16 @@ app.param("userId", (req, res, next, userId) => {
   next();
 });
 
+/*
+============================================
+TODO-5 (/users/:userId route):
+============================================
+*/
+
+// Route params: /users/:userId route
+app.get("/users/:userId", (req, res) => {
+  return res.json({
+    ok: true,
+    userId: req.userIdNum,
+  });
+});
