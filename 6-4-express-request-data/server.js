@@ -105,22 +105,80 @@ LAB SETUP INSTRUCTIONS
  */
 
 //import express
+// create express app instance to create web server
+// Route params: /profile/First/Last
+// Route param middleware example: /users/42
+// Route params: /users/:userId route
+// Start the server by listening
+
+
+/**
+===================================================================
+Back-end Lab — Express request data
+===================================================================
+*/
+
+//import express
 import express from "express";
 
 // create express app instance to create web server
 const app = express();
 
+// Root route (for testing server is running)
+app.get("/", (req, res) => {
+  res.send("server up");
+});
 
-
-// Route params: /profile/First/Last
-
-
-// Route param middleware example: /users/42
-
-
-// Route params: /users/:userId route
-
+/*
+============================================
+TODO-1 (Server Setup):
+============================================
+*/
 
 // Start the server by listening
+app.listen(3000, () => {
+  console.log("API running at http://localhost:3000");
+});
 
+/*
+============================================
+TODO-2 (/echo route):
+============================================
+*/
+
+// Query params: /echo?name=Ali&age=22
+app.get("/echo", (req, res) => {
+  const { name, age } = req.query;
+
+  // validation
+  if (!name || !age) {
+    return res
+      .status(400)
+      .json({ ok: false, error: "name & age required" });
+  }
+
+  // success response
+  return res.json({
+    ok: true,
+    name,
+    age,
+    msg: `Hello ${name}, you are ${age}`,
+  });
+});
+
+/*
+============================================
+TODO-3 (/profile/:first/:last route):
+============================================
+*/
+
+// Route params: /profile/First/Last
+app.get("/profile/:first/:last", (req, res) => {
+  const { first, last } = req.params;
+
+  return res.json({
+    ok: true,
+    fullName: `${first} ${last}`,
+  });
+});
 
